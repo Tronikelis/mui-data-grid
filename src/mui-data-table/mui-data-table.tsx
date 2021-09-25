@@ -10,7 +10,16 @@ import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
 import { DataTableProps, VirtualRowProps, RenderCell } from "../types";
 
 export default function MuiDataTable(props: DataTableProps) {
-    const { columns, rows, component, loading, sx, overscanCount = 0 } = props;
+    // table props
+    const {
+        columns,
+        rows,
+        component,
+        loading,
+        sx,
+        overscanCount = 0,
+        truncateText = true,
+    } = props;
 
     // true -> up, false -> down
     const [sortDirection, setSortDirection] = useState(false);
@@ -115,7 +124,12 @@ export default function MuiDataTable(props: DataTableProps) {
                         data={sortedRows}
                         overscan={overscanCount}
                         itemContent={(index, row) => (
-                            <VirtualRow columns={columns} row={row} />
+                            <VirtualRow
+                                columns={columns}
+                                row={row}
+                                index={index}
+                                truncate={truncateText}
+                            />
                         )}
                     />
                 </TableBody>
@@ -137,14 +151,14 @@ function LoadingOverlay() {
 }
 
 const VirtualRow = memo((props: VirtualRowProps) => {
-    const { columns, row } = props;
+    const { columns, row, index, truncate } = props;
 
     const renderField = (field: string, renderCell?: RenderCell) => {
         if (renderCell) {
             return (
                 <>
                     {renderCell({
-                        rowId: row.id,
+                        index,
                         data: row?.[field] ?? "",
                     })}
                 </>

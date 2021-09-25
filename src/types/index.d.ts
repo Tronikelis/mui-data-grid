@@ -6,11 +6,6 @@ import { ElementType, Element } from "react";
  * values = field values
  */
 export interface Row {
-    /**
-     * Every id SHOULD BE distinct !,
-     * pass the index.toString(), if you don't have an id
-     */
-    id: string;
     [key: string]: string;
 }
 
@@ -21,7 +16,7 @@ export interface Column {
     renderCell?: RenderCell;
 }
 
-export type RenderCell = (args: { rowId: string; data: string }) => ReactNode;
+export type RenderCell = (args: { index: number; data: string }) => ReactNode;
 
 export interface DataTableProps {
     /**
@@ -51,11 +46,18 @@ export interface DataTableProps {
      * displays a loading spinner if true
      */
     loading?: boolean;
+    /**
+     * if true, make the the shorter and show button "more",
+     * to show full original text. Default true
+     */
+    truncateText?: boolean;
 }
 
 export interface VirtualRowProps {
     row: Row;
     columns: Column[];
+    index: number;
+    truncate: boolean;
 }
 
 export interface VirtualDynamicListProps {
