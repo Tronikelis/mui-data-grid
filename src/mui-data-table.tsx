@@ -7,7 +7,8 @@ import { dequal as isEqual } from "dequal";
 import { useCustomCompareEffect as useDeepEffect } from "use-custom-compare";
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
 
-import { DataTableProps, VirtualRowProps, RenderCell } from "../types";
+import { TruncateText } from "./helpers";
+import { DataTableProps, VirtualRowProps, RenderCell } from "./typings";
 
 export default function MuiDataTable(props: DataTableProps) {
     // table props
@@ -18,7 +19,7 @@ export default function MuiDataTable(props: DataTableProps) {
         loading,
         sx,
         overscanCount = 0,
-        truncateText = true,
+        truncateText,
     } = props;
 
     // true -> up, false -> down
@@ -180,7 +181,11 @@ const VirtualRow = memo((props: VirtualRowProps) => {
                             wordBreak: "break-word",
                         }}
                     >
-                        {renderField(field, renderCell)}
+                        {!!truncate ? (
+                            <TruncateText obj={renderField(field, renderCell)} {...truncate} />
+                        ) : (
+                            <>{renderField(field, renderCell)}</>
+                        )}
                     </TableCell>
                 ))}
             </TableRow>

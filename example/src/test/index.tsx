@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { CssBaseline, Paper } from "@mui/material";
 
-import { MuiDataTable } from "../mui-data-table";
-import { Row } from "../types";
+import { MuiDataTable } from "../../../src/mui-data-table";
+import { Row } from "../../../src/typings";
 
 const def = Array(100_000)
     .fill(0)
@@ -70,6 +70,11 @@ export default function Test() {
                         }}
                         component={Paper}
                         loading={loading}
+                        truncateText={{
+                            length: 60,
+                            lessText: "L",
+                            moreText: "M",
+                        }}
                     />
                 </div>
             </div>

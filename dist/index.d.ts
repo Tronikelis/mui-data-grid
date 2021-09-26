@@ -1,24 +1,24 @@
-import { SxProps } from "@mui/system";
-import { ElementType, Element } from "react";
+import { SxProps } from '@mui/system';
+import { ElementType } from 'react';
 
 /**
  * keys = field names
  * values = field values
  */
-export interface Row {
+interface Row {
     [key: string]: string;
 }
 
-export interface Column {
+interface Column {
     field: string;
     width?: number;
     flex?: number;
     renderCell?: RenderCell;
 }
 
-export type RenderCell = (args: { index: number; data: string }) => ReactNode;
+type RenderCell = (args: { index: number; data: string }) => ReactNode;
 
-export interface DataTableProps {
+interface DataTableProps {
     /**
      * the table rows
      */
@@ -50,20 +50,28 @@ export interface DataTableProps {
      * if true, make the the shorter and show button "more",
      * to show full original text. Default true
      */
-    truncateText?: boolean;
+    truncateText?: TruncateText;
 }
 
-export interface VirtualRowProps {
+interface TruncateText {
+    length?: number;
+    lessText?: string;
+    moreText?: string;
+}
+
+interface VirtualRowProps {
     row: Row;
     columns: Column[];
     index: number;
-    truncate: boolean;
+    truncate?: TruncateText;
 }
 
-export interface VirtualDynamicListProps {
+interface VirtualDynamicListProps {
     sortedRows: Row[];
     columns: Column[];
     overscanCount: number;
 }
 
-export function DataTable(props: DataTableProps): Element;
+declare function MuiDataTable(props: DataTableProps): JSX.Element;
+
+export { Column, DataTableProps, MuiDataTable, RenderCell, Row, VirtualDynamicListProps, VirtualRowProps };
