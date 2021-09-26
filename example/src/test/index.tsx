@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { CssBaseline, Paper } from "@mui/material";
 
-import { MuiDataTable } from "../../../src/mui-data-table";
-import { Row } from "../../../src/typings";
+import { MuiDataTable, Row } from "mui-data-table";
 
 const def = Array(100_000)
     .fill(0)
