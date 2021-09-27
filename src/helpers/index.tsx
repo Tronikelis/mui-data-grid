@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 
 const isString = (x: any) => Object.prototype.toString.call(x) === "[object String]";
 
@@ -8,6 +8,12 @@ interface TruncateTextProps {
     moreText?: string;
     lessText?: string;
 }
+
+const MoreLessStyle = {
+    cursor: "pointer",
+    color: "#1b4394",
+    fontWeight: "bold",
+} as CSSProperties;
 
 export function TruncateText(props: TruncateTextProps) {
     const { length = 30, obj, lessText = "Less", moreText = "More" } = props;
@@ -32,14 +38,14 @@ export function TruncateText(props: TruncateTextProps) {
                 <>
                     {value.substring(0, truncated ? length : value.length)}
                     {"... "}
-                    <span onClick={changeTruncate} style={{ cursor: "pointer" }}>
+                    <span onClick={changeTruncate} style={MoreLessStyle}>
                         {moreText}
                     </span>
                 </>
             ) : (
                 <>
                     {value}{" "}
-                    <span onClick={changeTruncate} style={{ cursor: "pointer" }}>
+                    <span onClick={changeTruncate} style={MoreLessStyle}>
                         {lessText}
                     </span>
                 </>

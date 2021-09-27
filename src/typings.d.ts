@@ -16,7 +16,7 @@ export interface Column {
     renderCell?: RenderCell;
 }
 
-export type RenderCell = (args: { index: number; data: string }) => ReactNode;
+export type RenderCell = (args: { index: number; data: any }) => ReactNode;
 
 export interface DataTableProps {
     /**

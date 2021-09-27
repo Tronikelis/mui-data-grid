@@ -16,7 +16,7 @@ interface Column {
     renderCell?: RenderCell;
 }
 
-type RenderCell = (args: { index: number; data: string }) => ReactNode;
+type RenderCell = (args: { index: number; data: any }) => ReactNode;
 
 interface DataTableProps {
     /**

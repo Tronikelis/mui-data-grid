@@ -15,7 +15,7 @@ export default [
         },
         plugins: [
             typescript({
-                target: "ES5",
+                target: "ES6",
                 jsx: "react-jsx",
             }),
             externals({
