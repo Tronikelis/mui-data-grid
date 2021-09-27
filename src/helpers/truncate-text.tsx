@@ -12,7 +12,6 @@ interface TruncateTextProps {
 const MoreLessStyle = {
     cursor: "pointer",
     color: "#1b4394",
-    fontWeight: "bold",
 } as CSSProperties;
 
 export function TruncateText(props: TruncateTextProps) {

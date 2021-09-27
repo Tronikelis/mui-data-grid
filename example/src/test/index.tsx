@@ -71,8 +71,8 @@ export default function Test() {
                         loading={loading}
                         truncateText={{
                             length: 60,
-                            lessText: "L",
-                            moreText: "M",
+                            lessText: "Less",
+                            moreText: "More",
                         }}
                     />
                 </div>
