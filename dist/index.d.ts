@@ -1,5 +1,5 @@
 import { SxProps } from '@mui/system';
-import { ElementType } from 'react';
+import { ReactNode, ElementType } from 'react';
 
 /**
  * keys = field names
