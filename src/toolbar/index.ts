@@ -1,0 +1,1 @@
+export { default as MinMaxFont } from "./min-max-font";
