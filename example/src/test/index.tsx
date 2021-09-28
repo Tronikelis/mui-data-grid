@@ -3,13 +3,13 @@ import { CssBaseline, Paper } from "@mui/material";
 
 import { MuiDataTable, Row } from "mui-data-table";
 
-const def = Array(100_000)
+const def = Array(1_000)
     .fill(0)
     .map((val, index) => ({
-        hello: Math.random().toFixed(100),
-        world: Math.random().toFixed(100),
-        another: Math.random().toFixed(100),
-        other: Math.random().toFixed(100),
+        hello: "hi " + Math.random().toFixed(4),
+        world: "hi " + Math.random().toFixed(4),
+        another: "hi " + Math.random().toFixed(4),
+        other: "hi " + Math.random().toFixed(4),
     })) as Row[];
 
 export default function Test() {

@@ -1,33 +1,53 @@
-import { memo, useRef, useState } from "react";
+import { memo, useRef } from "react";
 import {
     Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, LinearProgress,
 } from "@mui/material";
-import { sort } from "fast-sort";
 import { dequal as isEqual } from "dequal";
 import { useCustomCompareEffect as useDeepEffect } from "use-custom-compare";
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
+import { useWorker } from "@koale/useworker";
 
+import { useTableStore } from "./store";
 import { TruncateText } from "./helpers";
-import { DataTableProps, VirtualRowProps, RenderCell } from "./typings";
+import { MinMaxFont } from "./toolbar";
+import { DataTableProps, VirtualRowProps, RenderCell, Row } from "./typings";
+
+const workerSortFn = (rows: Row[], field: string, dir: boolean) => {
+    if (dir) {
+        return [...rows].sort((a, b) => {
+            if ((a[field] as any) < (b[field] as any)) return -1;
+            if ((b[field] as any) < (a[field] as any)) return 1;
+            return 0;
+        });
+    }
+    return [...rows].sort((a, b) => {
+        if ((a[field] as any) < (b[field] as any)) return 1;
+        if ((b[field] as any) < (a[field] as any)) return -1;
+        return 0;
+    });
+};
 
 export default function MuiDataTable(props: DataTableProps) {
     // table props
-    const {
-        columns,
-        rows,
-        component,
-        loading,
-        sx,
-        overscanCount = 0,
-        truncateText,
-    } = props;
+    const { columns, rows, component, loading, sx, overscanCount = 0, truncateText } = props;
 
-    // true -> up, false -> down
-    const [sortDirection, setSortDirection] = useState(false);
-    // sort by -> field name
-    const [sortBy, setSortBy] = useState("");
-    // currently sorted rows
-    const [sortedRows, setSortedRows] = useState(rows);
+    const {
+        // our sorted rows
+        rows: sortedRows,
+        // field that is sorted by
+        sortBy,
+        // sort direction -> true up, false down
+        sortDirection,
+    } = useTableStore(store => store.state);
+
+    const {
+        setRows: setSortedRows,
+        setSortBy,
+        setSortDirection,
+    } = useTableStore(store => store.actions);
+
+    // web worker for sorting
+    const [sortWorker, { status: workerStatus }] = useWorker(workerSortFn);
 
     // virtuoso ref
     const virtuoso = useRef<VirtuosoHandle>(null);
@@ -41,18 +61,15 @@ export default function MuiDataTable(props: DataTableProps) {
         isEqual
     );
 
-    const sortRows = (dir: boolean, field: string) => {
+    const sortRows = async (dir: boolean, field: string) => {
+        if (workerStatus === "RUNNING") return;
+        
         // scroll to top
         virtuoso.current?.scrollToIndex({ index: 0 });
         // set currently sorted by column
         setSortBy(field);
-        // sort the things
-        setSortedRows(rows => {
-            if (dir) {
-                return sort(rows).asc(x => x[field]);
-            }
-            return sort(rows).desc(x => x[field]);
-        });
+        // sort the things, using a web worker
+        setSortedRows(await sortWorker(sortedRows, field, dir));
     };
 
     return (
@@ -65,6 +82,8 @@ export default function MuiDataTable(props: DataTableProps) {
                 flexDirection: "column",
             }}
         >
+            <Toolbar />
+
             <Table
                 sx={{
                     minWidth: "300px",
@@ -101,7 +120,7 @@ export default function MuiDataTable(props: DataTableProps) {
                                         direction={sortDirection ? "asc" : "desc"}
                                         onClick={() => {
                                             sortRows(!sortDirection, field);
-                                            setSortDirection(x => !x);
+                                            setSortDirection();
                                         }}
                                     >
                                         {field.toString()}
@@ -139,20 +158,26 @@ export default function MuiDataTable(props: DataTableProps) {
     );
 }
 
-function LoadingOverlay() {
+function Toolbar() {
     return (
-        <LinearProgress
+        <Box
             sx={{
-                position: "absolute",
-                top: "0px",
                 width: "100%",
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center",
             }}
-        />
+        >
+            <MinMaxFont />
+        </Box>
     );
 }
 
 const VirtualRow = memo((props: VirtualRowProps) => {
     const { columns, row, index, truncate } = props;
+
+    // current font size
+    const fontSize = useTableStore(store => store.state.fontSize);
 
     const renderField = (field: string, renderCell?: RenderCell) => {
         if (renderCell) {
@@ -181,14 +206,31 @@ const VirtualRow = memo((props: VirtualRowProps) => {
                             wordBreak: "break-word",
                         }}
                     >
-                        {!!truncate ? (
-                            <TruncateText obj={renderField(field, renderCell)} {...truncate} />
-                        ) : (
-                            <>{renderField(field, renderCell)}</>
-                        )}
+                        <div style={{ fontSize: `${fontSize}em` }}>
+                            {!!truncate ? (
+                                <TruncateText
+                                    obj={renderField(field, renderCell)}
+                                    {...truncate}
+                                />
+                            ) : (
+                                <>{renderField(field, renderCell)}</>
+                            )}
+                        </div>
                     </TableCell>
                 ))}
             </TableRow>
         </div>
     );
 });
+
+function LoadingOverlay() {
+    return (
+        <LinearProgress
+            sx={{
+                position: "absolute",
+                top: "0px",
+                width: "100%",
+            }}
+        />
+    );
+}

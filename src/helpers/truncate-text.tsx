@@ -30,6 +30,8 @@ export function TruncateText(props: TruncateTextProps) {
 
     // fallback if not a string
     if (!value) return obj as JSX.Element;
+    // if we don't need to shorten
+    if (length >= value.length) return obj as JSX.Element;
 
     return (
         <>
