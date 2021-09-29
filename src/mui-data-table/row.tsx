@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { TableRow, TableCell } from "@mui/material";
 import { debounce } from "throttle-debounce";
 
@@ -7,11 +7,12 @@ import { useTableStore } from "../store";
 import { VirtualRowProps, RenderCell } from "../typings";
 
 export const VirtualRow = memo((props: VirtualRowProps) => {
-    const { columns, row, index, truncate } = props;
+    const { columns, row, index, truncate: truncateProps } = props;
 
     const fontSize = useTableStore(store => store.state.fontSize);
-    
+
     const rowCellsRef = useRef<HTMLDivElement[]>([]);
+    const [truncate, setTruncate] = useState(truncateProps ?? {});
 
     const renderField = (field: string, renderCell?: RenderCell) => {
         if (renderCell) {
@@ -28,14 +29,11 @@ export const VirtualRow = memo((props: VirtualRowProps) => {
     };
 
     useEffect(() => {
-        const calculateWidths = debounce(300, () => {
-            const largestRows = { ...rowCellsRef }.current.sort(
-                (a, b) => b?.offsetHeight - a?.offsetHeight
-            );
-        });
+        // TODO somehow calculate widths
+        const calcWidths = debounce(100, () => { });
 
-        window.addEventListener("resize", calculateWidths);
-        return () => window.removeEventListener("resize", calculateWidths);
+        window.addEventListener("resize", calcWidths);
+        return () => window.removeEventListener("resize", calcWidths);
     }, []);
 
     return (
