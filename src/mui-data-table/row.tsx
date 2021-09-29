@@ -1,18 +1,14 @@
-import { memo, useEffect, useRef, useState } from "react";
+import { memo } from "react";
 import { TableRow, TableCell } from "@mui/material";
-import { debounce } from "throttle-debounce";
 
 import { TruncateText } from "../helpers";
 import { useTableStore } from "../store";
 import { VirtualRowProps, RenderCell } from "../typings";
 
 export const VirtualRow = memo((props: VirtualRowProps) => {
-    const { columns, row, index, truncate: truncateProps } = props;
+    const { columns, row, index, truncate } = props;
 
     const fontSize = useTableStore(store => store.state.fontSize);
-
-    const rowCellsRef = useRef<HTMLDivElement[]>([]);
-    const [truncate, setTruncate] = useState(truncateProps ?? {});
 
     const renderField = (field: string, renderCell?: RenderCell) => {
         if (renderCell) {
@@ -28,14 +24,6 @@ export const VirtualRow = memo((props: VirtualRowProps) => {
         return row?.[field]?.toString();
     };
 
-    useEffect(() => {
-        // TODO somehow calculate widths
-        const calcWidths = debounce(100, () => { });
-
-        window.addEventListener("resize", calcWidths);
-        return () => window.removeEventListener("resize", calcWidths);
-    }, []);
-
     return (
         <div style={{ width: "100%", height: "100%" }}>
             <TableRow sx={{ display: "flex" }} component="div" hover>
@@ -49,10 +37,7 @@ export const VirtualRow = memo((props: VirtualRowProps) => {
                             wordBreak: "break-word",
                         }}
                     >
-                        <div
-                            style={{ fontSize: `${fontSize}em` }}
-                            ref={el => (rowCellsRef.current[i] = el as any)}
-                        >
+                        <div style={{ fontSize: `${fontSize}em` }}>
                             {!!truncate ? (
                                 <TruncateText
                                     obj={renderField(field, renderCell)}
