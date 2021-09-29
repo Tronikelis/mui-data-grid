@@ -1,6 +1,6 @@
 import { CSSProperties, useEffect, useState } from "react";
 
-const isString = (x: any) => Object.prototype.toString.call(x) === "[object String]";
+import { isString } from "."
 
 interface TruncateTextProps {
     obj: any;
