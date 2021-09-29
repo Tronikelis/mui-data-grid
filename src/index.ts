@@ -1,1 +1,1 @@
-export { default as MuiDataTable } from "./mui-data-table";
+export { MuiDataTable } from "./mui-data-table";

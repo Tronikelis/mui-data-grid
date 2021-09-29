@@ -5,7 +5,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import { useTableStore } from "../store";
 
 export default function MinMaxFont() {
-    // for changing font's size
+
     const { incrementFont, decrementFont } = useTableStore(store => store.actions);
 
     return (

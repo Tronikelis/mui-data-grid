@@ -6,10 +6,10 @@ import { MuiDataTable, Row } from "mui-data-table";
 const def = Array(1_000)
     .fill(0)
     .map((val, index) => ({
-        hello: "hi " + Math.random().toFixed(4),
-        world: "hi " + Math.random().toFixed(4),
-        another: "hi " + Math.random().toFixed(4),
-        other: "hi " + Math.random().toFixed(4),
+        hello: "hi " + Math.random().toFixed(10),
+        world: "hi " + Math.random().toFixed(10),
+        another: "hi " + Math.random().toFixed(10),
+        other: "hi " + Math.random().toFixed(10),
     })) as Row[];
 
 export default function Test() {

@@ -1,4 +1,4 @@
-import { memo, useRef } from "react";
+import { useRef } from "react";
 import {
     Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, LinearProgress,
 } from "@mui/material";
@@ -7,10 +7,11 @@ import { useCustomCompareEffect as useDeepEffect } from "use-custom-compare";
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
 import { useWorker } from "@koale/useworker";
 
-import { useTableStore } from "./store";
-import { TruncateText } from "./helpers";
-import { MinMaxFont } from "./toolbar";
-import { DataTableProps, VirtualRowProps, RenderCell, Row } from "./typings";
+import { useTableStore } from "../store";
+import { MinMaxFont } from "../toolbar";
+import { DataTableProps, Row } from "../typings";
+
+import { VirtualRow } from "./row";
 
 const workerSortFn = (rows: Row[], field: string, dir: boolean) => {
     if (dir) {
@@ -28,15 +29,12 @@ const workerSortFn = (rows: Row[], field: string, dir: boolean) => {
 };
 
 export default function MuiDataTable(props: DataTableProps) {
-    // table props
+
     const { columns, rows, component, loading, sx, overscanCount = 0, truncateText } = props;
 
     const {
-        // our sorted rows
         rows: sortedRows,
-        // field that is sorted by
         sortBy,
-        // sort direction -> true up, false down
         sortDirection,
     } = useTableStore(store => store.state);
 
@@ -49,7 +47,6 @@ export default function MuiDataTable(props: DataTableProps) {
     // web worker for sorting
     const [sortWorker, { status: workerStatus }] = useWorker(workerSortFn);
 
-    // virtuoso ref
     const virtuoso = useRef<VirtuosoHandle>(null);
 
     // on rows prop change, change our rows
@@ -66,9 +63,8 @@ export default function MuiDataTable(props: DataTableProps) {
         
         // scroll to top
         virtuoso.current?.scrollToIndex({ index: 0 });
-        // set currently sorted by column
+        
         setSortBy(field);
-        // sort the things, using a web worker
         setSortedRows(await sortWorker(sortedRows, field, dir));
     };
 
@@ -172,56 +168,6 @@ function Toolbar() {
         </Box>
     );
 }
-
-const VirtualRow = memo((props: VirtualRowProps) => {
-    const { columns, row, index, truncate } = props;
-
-    // current font size
-    const fontSize = useTableStore(store => store.state.fontSize);
-
-    const renderField = (field: string, renderCell?: RenderCell) => {
-        if (renderCell) {
-            return (
-                <>
-                    {renderCell({
-                        index,
-                        data: row?.[field] ?? "",
-                    })}
-                </>
-            );
-        }
-        return row?.[field]?.toString();
-    };
-
-    return (
-        <div style={{ width: "100%", height: "100%" }}>
-            <TableRow sx={{ display: "flex" }} component="div" hover>
-                {columns.map(({ field, flex, width, renderCell }, i) => (
-                    <TableCell
-                        component="div"
-                        key={i}
-                        sx={{
-                            flex: !width && !flex ? 1 : flex,
-                            width,
-                            wordBreak: "break-word",
-                        }}
-                    >
-                        <div style={{ fontSize: `${fontSize}em` }}>
-                            {!!truncate ? (
-                                <TruncateText
-                                    obj={renderField(field, renderCell)}
-                                    {...truncate}
-                                />
-                            ) : (
-                                <>{renderField(field, renderCell)}</>
-                            )}
-                        </div>
-                    </TableCell>
-                ))}
-            </TableRow>
-        </div>
-    );
-});
 
 function LoadingOverlay() {
     return (

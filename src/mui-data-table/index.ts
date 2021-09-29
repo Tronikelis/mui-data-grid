@@ -1,0 +1,1 @@
+export { default as MuiDataTable } from "./mui-data-table";
