@@ -1,6 +1,6 @@
 import create from "zustand";
-import produce from "immer";
 
+import { immer } from "./middleware";
 import { Row } from "../typings";
 
 interface TableStore {
@@ -19,7 +19,7 @@ interface TableStore {
     };
 }
 
-export const useTableStore = create<TableStore>(set => ({
+export const useTableStore = create<TableStore>(immer(set => ({
     state: {
         rows: [],
         fontSize: 1,
@@ -28,35 +28,20 @@ export const useTableStore = create<TableStore>(set => ({
         sortBy: "",
     },
     actions: {
-        incrementFont: () =>
-            set(
-                produce((clone: TableStore) => {
-                    clone.state.fontSize += 0.1;
-                })
-            ),
-        decrementFont: () =>
-            set(
-                produce((clone: TableStore) => {
-                    clone.state.fontSize -= 0.1;
-                })
-            ),
-        setSortDirection: () =>
-            set(
-                produce((clone: TableStore) => {
-                    clone.state.sortDirection = !clone.state.sortDirection;
-                })
-            ),
-        setSortBy: by =>
-            set(
-                produce((clone: TableStore) => {
-                    clone.state.sortBy = by;
-                })
-            ),
-        setRows: rows =>
-            set(
-                produce((clone: TableStore) => {
-                    clone.state.rows = rows;
-                })
-            ),
+        incrementFont: () => set(store => {
+            store.state.fontSize += 0.1;
+        }),
+        decrementFont: () => set(store => {
+            store.state.fontSize -= 0.1;
+        }),
+        setSortDirection: () => set(store => {
+            store.state.sortDirection = !store.state.sortDirection;
+        }),
+        setSortBy: by => set(store => {
+            store.state.sortBy = by;
+        }),
+        setRows: rows => set(store => {
+            store.state.rows = rows;
+        }),
     },
-}));
+})));
