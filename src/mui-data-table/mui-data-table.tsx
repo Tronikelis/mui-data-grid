@@ -5,31 +5,13 @@ import {
 import { dequal as isEqual } from "dequal";
 import { useCustomCompareEffect as useDeepEffect } from "use-custom-compare";
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
-import { useWorker } from "@koale/useworker";
 
 import { useTableStore } from "../store";
 import { MinMaxFont } from "../toolbar";
-import { DataTableProps, Row } from "../typings";
-
+import { DataTableProps } from "../typings";
 import { VirtualRow } from "./row";
 
-const workerSortFn = (rows: Row[], field: string, dir: boolean) => {
-    if (dir) {
-        return [...rows].sort((a, b) => {
-            if ((a[field] as any) < (b[field] as any)) return -1;
-            if ((b[field] as any) < (a[field] as any)) return 1;
-            return 0;
-        });
-    }
-    return [...rows].sort((a, b) => {
-        if ((a[field] as any) < (b[field] as any)) return 1;
-        if ((b[field] as any) < (a[field] as any)) return -1;
-        return 0;
-    });
-};
-
 export default function MuiDataTable(props: DataTableProps) {
-
     const { columns, rows, component, loading, sx, overscanCount = 0, truncateText } = props;
 
     const {
@@ -44,9 +26,6 @@ export default function MuiDataTable(props: DataTableProps) {
         setSortDirection,
     } = useTableStore(store => store.actions);
 
-    // web worker for sorting
-    const [sortWorker, { status: workerStatus }] = useWorker(workerSortFn);
-
     const virtuoso = useRef<VirtuosoHandle>(null);
 
     // on rows prop change, change our rows
@@ -58,14 +37,26 @@ export default function MuiDataTable(props: DataTableProps) {
         isEqual
     );
 
-    const sortRows = async (dir: boolean, field: string) => {
-        if (workerStatus === "RUNNING") return;
-        
+    const sortRows = (dir: boolean, field: string) => {
+        const sortFn = () => {
+            if (dir) {
+                return [...rows].sort((a, b) => {
+                    if ((a[field] as any) < (b[field] as any)) return -1;
+                    if ((b[field] as any) < (a[field] as any)) return 1;
+                    return 0;
+                });
+            }
+            return [...rows].sort((a, b) => {
+                if ((a[field] as any) < (b[field] as any)) return 1;
+                if ((b[field] as any) < (a[field] as any)) return -1;
+                return 0;
+            });
+        };
+
+        setSortBy(field);
+        setSortedRows(sortFn());
         // scroll to top
         virtuoso.current?.scrollToIndex({ index: 0 });
-        
-        setSortBy(field);
-        setSortedRows(await sortWorker(sortedRows, field, dir));
     };
 
     return (

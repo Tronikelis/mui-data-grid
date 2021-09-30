@@ -70,7 +70,7 @@ export default function Test() {
                         component={Paper}
                         loading={loading}
                         truncateText={{
-                            length: 60,
+                            lines: 3,
                             lessText: "Less",
                             moreText: "More",
                         }}

@@ -54,7 +54,7 @@ export interface DataTableProps {
 }
 
 interface TruncateText {
-    length?: number;
+    lines?: number;
     lessText?: string;
     moreText?: string;
 }

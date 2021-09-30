@@ -1,10 +1,10 @@
-import { CSSProperties, useEffect, useState } from "react";
+import { CSSProperties, useEffect, useState, useCallback } from "react";
 
-import { isString } from "."
+import { isString } from ".";
 
 interface TruncateTextProps {
     obj: any;
-    length?: number;
+    lines?: number;
     moreText?: string;
     lessText?: string;
 }
@@ -15,42 +15,39 @@ const MoreLessStyle = {
 } as CSSProperties;
 
 export function TruncateText(props: TruncateTextProps) {
-    const { length = 30, obj, lessText = "Less", moreText = "More" } = props;
+    const { lines = 3, obj, lessText = "Less", moreText = "More" } = props;
 
     const [value, setValue] = useState("");
     const [truncated, setTruncated] = useState(true);
+    const [length, setLength] = useState<null | number>(null);
+
+    // calculate text's length
+    const textRef = useCallback(
+        (node: HTMLSpanElement | null) => {
+            if (!node) return;
+            // calculate if there are more new lines than the maximum
+            const breaks = node.getClientRects().length;
+            if (breaks <= lines) return;
+
+            setLength(Math.ceil(node.innerText.length / lines));
+        },
+        [lines]
+    );
 
     useEffect(() => {
         isString(obj) && setValue(obj);
     }, [obj]);
 
-    const changeTruncate = () => {
-        setTruncated(x => !x);
-    };
-
     // fallback if not a string
     if (!value) return obj as JSX.Element;
-    // if we don't need to shorten
-    if (length >= value.length) return obj as JSX.Element;
 
     return (
-        <>
-            {truncated ? (
-                <>
-                    {value.substring(0, truncated ? length : value.length)}
-                    {"... "}
-                    <span onClick={changeTruncate} style={MoreLessStyle}>
-                        {moreText}
-                    </span>
-                </>
-            ) : (
-                <>
-                    {value}{" "}
-                    <span onClick={changeTruncate} style={MoreLessStyle}>
-                        {lessText}
-                    </span>
-                </>
-            )}
-        </>
+        <span ref={textRef}>
+            {truncated && length ? value.substring(0, length) : value}
+
+            <span onClick={() => setTruncated(x => !x)} style={MoreLessStyle}>
+                {length && <>{truncated ? "... " + moreText : "... " + lessText}</>}
+            </span>
+        </span>
     );
 }
