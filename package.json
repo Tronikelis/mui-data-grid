@@ -4,6 +4,7 @@
     "dependencies": {
         "dequal": "^2.0.2",
         "immer": "^9.0.6",
+        "react-csv": "^2.0.3",
         "react-virtuoso": "^2.2.1",
         "use-custom-compare": "^1.2.0",
         "zustand": "^3.5.11"
@@ -44,6 +45,7 @@
         "@rollup/plugin-typescript": "^8.2.5",
         "@types/node": "^16.10.2",
         "@types/react": "^17.0.25",
+        "@types/react-csv": "^1.1.2",
         "@types/react-dom": "^17.0.9",
         "react-scripts": "^4.0.3",
         "rollup": "^2.57.0",

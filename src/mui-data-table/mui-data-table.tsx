@@ -7,7 +7,7 @@ import { useCustomCompareEffect as useDeepEffect } from "use-custom-compare";
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
 
 import { useTableStore } from "../store";
-import { MinMaxFont } from "../toolbar";
+import { ExportCSV, MinMaxFont } from "../toolbar";
 import { DataTableProps } from "../typings";
 import { VirtualRow } from "./row";
 
@@ -151,10 +151,12 @@ function Toolbar() {
             sx={{
                 width: "100%",
                 display: "flex",
-                justifyContent: "flex-end",
+                justifyContent: "space-between",
                 alignItems: "center",
+                p: "5px",
             }}
         >
+            <ExportCSV />
             <MinMaxFont />
         </Box>
     );
