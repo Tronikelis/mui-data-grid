@@ -47,18 +47,22 @@ export default function Test() {
                         columns={[
                             {
                                 field: "hello",
+                                headerName: "Heelo",
                                 flex: 0.2,
                             },
                             {
                                 field: "world",
+                                headerName: "World",
                                 flex: 1,
                             },
                             {
                                 field: "another",
+                                headerName: "Another",
                                 width: 200,
                             },
                             {
                                 field: "other",
+                                headerName: "Other",
                                 flex: 1,
                             },
                         ]}

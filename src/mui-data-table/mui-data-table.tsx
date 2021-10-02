@@ -91,7 +91,7 @@ function MuiDataTable(props: DataTableProps) {
             >
                 <TableHead component="div">
                     <TableRow sx={{ display: "flex" }} component="div">
-                        {columns.map(({ field, flex, width }) => (
+                        {columns.map(({ field, flex, width, headerName }) => (
                             <TableCell
                                 key={field}
                                 sx={{
@@ -119,7 +119,7 @@ function MuiDataTable(props: DataTableProps) {
                                             setSortDirection();
                                         }}
                                     >
-                                        {field.toString()}
+                                        {headerName.toString()}
                                     </TableSortLabel>
                                 </Box>
                             </TableCell>

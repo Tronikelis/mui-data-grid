@@ -11,6 +11,7 @@ interface Row {
 
 interface Column {
     field: string;
+    headerName: string;
     width?: number;
     flex?: number;
     renderCell?: RenderCell;
