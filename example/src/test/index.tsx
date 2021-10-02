@@ -67,10 +67,7 @@ export default function Test() {
                             },
                         ]}
                         rows={rows}
-                        sx={{
-                            width: "100%",
-                            height: "100%",
-                        }}
+                        
                         component={Paper}
                         loading={loading}
                         truncateText={{

@@ -85,6 +85,8 @@ function MuiDataTable(props: DataTableProps) {
                     minWidth: "300px",
                     display: "flex",
                     flexDirection: "column",
+                    width: "100%",
+                    height: "100%",
                     ...sx,
                 }}
                 component="div"
