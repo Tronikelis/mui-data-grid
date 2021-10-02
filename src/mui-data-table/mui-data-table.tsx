@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef, memo } from "react";
 import {
     Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, LinearProgress,
 } from "@mui/material";
@@ -7,11 +7,14 @@ import { useCustomCompareEffect as useDeepEffect } from "use-custom-compare";
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
 
 import { useTableStore } from "../store";
-import { ExportCSV, MinMaxFont } from "../toolbar";
-import { DataTableProps } from "../typings";
+import { ExportCSV, MinMaxFont, Refresh } from "../toolbar";
+import { DataTableProps, Row } from "../typings";
 import { VirtualRow } from "./row";
 
-export default function MuiDataTable(props: DataTableProps) {
+// use this later for refreshing
+export let cachedRows: Row[] | null = null;
+
+function MuiDataTable(props: DataTableProps) {
     const { columns, rows, component, loading, sx, overscanCount = 0, truncateText } = props;
 
     const {
@@ -36,6 +39,12 @@ export default function MuiDataTable(props: DataTableProps) {
         [rows],
         isEqual
     );
+
+    // cache the rows, to refresh to them later
+    useEffect(() => {
+        cachedRows = rows;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const sortRows = (dir: boolean, field: string) => {
         const sortFn = () => {
@@ -144,6 +153,7 @@ export default function MuiDataTable(props: DataTableProps) {
         </TableContainer>
     );
 }
+export default memo(MuiDataTable, isEqual);
 
 function Toolbar() {
     return (
@@ -158,6 +168,7 @@ function Toolbar() {
         >
             <ExportCSV />
             <MinMaxFont />
+            <Refresh />
         </Box>
     );
 }

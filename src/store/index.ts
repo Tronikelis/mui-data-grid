@@ -11,8 +11,7 @@ interface TableStore {
         sortBy: string;
     };
     actions: {
-        incrementFont: () => void;
-        decrementFont: () => void;
+        setFontSize: (fn: (size: number) => number) => void;
         setSortDirection: () => void;
         setSortBy: (by: string) => void;
         setRows: (rows: Row[]) => void;
@@ -29,11 +28,8 @@ export const useTableStore = create<TableStore>(
             sortBy: "",
         },
         actions: {
-            incrementFont: () => set(store => {
-                store.state.fontSize += 0.1;
-            }),
-            decrementFont: () => set(store => {
-                store.state.fontSize -= 0.1;
+            setFontSize: fn => set(store => {
+                store.state.fontSize = fn(store.state.fontSize);
             }),
             setSortDirection: () => set(store => {
                 store.state.sortDirection = !store.state.sortDirection;

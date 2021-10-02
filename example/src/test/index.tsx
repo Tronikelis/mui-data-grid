@@ -3,7 +3,7 @@ import { CssBaseline, Paper } from "@mui/material";
 
 import { MuiDataTable, Row } from "mui-data-table";
 
-const def = Array(1_000)
+const def = Array(10_000)
     .fill(0)
     .map((val, index) => ({
         hello: "hi " + Math.random().toFixed(Math.floor(Math.random() * 30)),

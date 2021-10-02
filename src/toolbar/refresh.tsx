@@ -1,14 +1,23 @@
 import { IconButton } from "@mui/material";
-import RefreshIcon from "@mui/icons-material/Refresh";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
 
 import { useTableStore } from "../store";
+import { cachedRows } from "../mui-data-table";
 
 export default function Refresh() {
-    const { setSortBy, setSortDirection, setRows } = useTableStore(store => store.actions);
-    // TODO set everything to default
+    const { setSortBy, setRows, setFontSize } = useTableStore(store => store.actions);
+
+    const refresh = () => {
+        setSortBy("");
+        setFontSize(() => 1);
+
+        if (!cachedRows) return;
+        setRows(cachedRows);
+    };
+
     return (
-        <IconButton>
-            <RefreshIcon />
+        <IconButton onClick={refresh}>
+            <RestartAltIcon />
         </IconButton>
     );
 }
