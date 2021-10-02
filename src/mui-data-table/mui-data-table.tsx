@@ -6,7 +6,7 @@ import { dequal as isEqual } from "dequal";
 import { useCustomCompareEffect as useDeepEffect } from "use-custom-compare";
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
 
-import { useTableStore } from "../store";
+import { useTableStore, StoreProvider } from "../store";
 import { ExportCSV, MinMaxFont, Refresh } from "../toolbar";
 import { DataTableProps, Row } from "../typings";
 import { VirtualRow } from "./row";
@@ -14,13 +14,13 @@ import { VirtualRow } from "./row";
 // use this later for refreshing
 export let cachedRows: Row[] | null = null;
 
-function MuiDataTable(props: DataTableProps) {
+const MuiDataTable = memo((props: DataTableProps) => {
     const { columns, rows, component, loading, sx, overscanCount = 0, truncateText } = props;
 
     const {
         rows: sortedRows,
         sortBy,
-        sortDirection,
+        sortDirection
     } = useTableStore(store => store.state);
 
     const {
@@ -43,7 +43,7 @@ function MuiDataTable(props: DataTableProps) {
     // cache the rows, to refresh to them later
     useEffect(() => {
         cachedRows = rows;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const sortRows = (dir: boolean, field: string) => {
@@ -154,8 +154,7 @@ function MuiDataTable(props: DataTableProps) {
             </Table>
         </TableContainer>
     );
-}
-export default memo(MuiDataTable, isEqual);
+}, isEqual);
 
 function Toolbar() {
     return (
@@ -184,5 +183,14 @@ function LoadingOverlay() {
                 width: "100%",
             }}
         />
+    );
+}
+
+// entry point to the data table component
+export default function TableEntry({ ...props }: DataTableProps) {
+    return (
+        <StoreProvider>
+            <MuiDataTable {...props} />
+        </StoreProvider>
     );
 }
