@@ -6,7 +6,7 @@ import { ReactNode, ElementType } from 'react';
  * values = field values
  */
 interface Row {
-    [key: string]: string;
+    [key: string]: string | number;
 }
 
 interface Column {

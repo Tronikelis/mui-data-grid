@@ -21,7 +21,7 @@ export const VirtualRow = memo((props: VirtualRowProps) => {
                 </>
             );
         }
-        return row?.[field]?.toString();
+        return row?.[field]?.toString() ?? "";
     };
 
     return (
