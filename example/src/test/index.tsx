@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CssBaseline, Paper } from "@mui/material";
+import { Button, CssBaseline, Dialog, Paper } from "@mui/material";
 
 import { MuiDataTable, Row } from "mui-data-table";
 
@@ -11,6 +11,20 @@ const def = Array(10_000)
         another: "hi " + Math.random().toFixed(Math.floor(Math.random() * 30)),
         other: "hi " + Math.random().toFixed(Math.floor(Math.random() * 30)),
     })) as Row[];
+
+function cell() {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [open, setOpen] = useState(false);
+
+    return (
+        <>
+            <Button onClick={() => setOpen(true)}>Open</Button>
+            <Dialog open={open} onClose={() => setOpen(false)}>
+                <div>Heelloo</div>
+            </Dialog>
+        </>
+    );
+}
 
 export default function Test() {
     const [count, setCount] = useState(0);
@@ -49,6 +63,7 @@ export default function Test() {
                                 field: "hello",
                                 headerName: "Heelo",
                                 flex: 0.2,
+                                renderCell: cell,
                             },
                             {
                                 field: "world",
@@ -67,7 +82,6 @@ export default function Test() {
                             },
                         ]}
                         rows={rows}
-                        
                         component={Paper}
                         loading={loading}
                         truncateText={{
