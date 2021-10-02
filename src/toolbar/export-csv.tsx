@@ -14,6 +14,7 @@ export default function ExportCSV() {
         () =>
             // eslint-disable-next-line react-hooks/rules-of-hooks
             subscribe((store: TableStore) => (dataRef.current = store.state.rows)),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         []
     );
 
