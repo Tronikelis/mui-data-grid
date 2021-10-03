@@ -11,19 +11,21 @@ export const VirtualRow = memo((props: VirtualRowProps) => {
     const fontSize = useTableStore(store => store.state.fontSize);
 
     const renderField = (field: string, renderCell?: RenderCell) => {
+        const value = row?.[field] ? String(row[field]) : "";
+
         if (renderCell) {
             return (
                 <>
                     {renderCell({
                         index,
-                        value: row?.[field] ?? "",
+                        value,
                         row,
                     })}
                 </>
             );
         }
 
-        return String(row?.[field]);
+        return value;
     };
 
     return (

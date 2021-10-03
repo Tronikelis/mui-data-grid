@@ -63,7 +63,6 @@ export default function Test() {
                                 field: "hello",
                                 headerName: "Heelo",
                                 flex: 0.2,
-                                renderCell: cell,
                             },
                             {
                                 field: "world",
