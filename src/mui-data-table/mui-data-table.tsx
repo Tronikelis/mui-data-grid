@@ -14,13 +14,10 @@ import { VirtualRow } from "./row";
 const MuiDataTable = memo((props: DataTableProps) => {
     const { columns, rows, component, loading, sx, overscanCount = 0, truncateText } = props;
 
-    const {
-        rows: sortedRows,
-        sortBy,
-        sortDirection
-    } = useTableStore(store => store.state);
+    const { rows: sortedRows, sortBy, sortDirection } = useTableStore(store => store.state);
 
     const {
+        setOrgRows,
         setRows: setSortedRows,
         setSortBy,
         setSortDirection,
@@ -32,6 +29,7 @@ const MuiDataTable = memo((props: DataTableProps) => {
     useDeepEffect(
         () => {
             setSortedRows(rows);
+            setOrgRows(rows);
         },
         [rows],
         isEqual
@@ -40,17 +38,13 @@ const MuiDataTable = memo((props: DataTableProps) => {
     const sortRows = (dir: boolean, field: string) => {
         const sortFn = () => {
             if (dir) {
-                return [...rows].sort((a, b) => {
-                    if ((a[field] as any) < (b[field] as any)) return -1;
-                    if ((b[field] as any) < (a[field] as any)) return 1;
-                    return 0;
-                });
+                return [...rows].sort((a, b) =>
+                    a[field].toString().localeCompare(b[field].toString())
+                );
             }
-            return [...rows].sort((a, b) => {
-                if ((a[field] as any) < (b[field] as any)) return 1;
-                if ((b[field] as any) < (a[field] as any)) return -1;
-                return 0;
-            });
+            return [...rows].sort((a, b) =>
+                b[field].toString().localeCompare(a[field].toString())
+            );
         };
 
         setSortBy(field);

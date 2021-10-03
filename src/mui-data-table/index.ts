@@ -1,1 +1,1 @@
-export { default as MuiDataTable, cachedRows } from "./mui-data-table";
+export { default as MuiDataTable } from "./mui-data-table";

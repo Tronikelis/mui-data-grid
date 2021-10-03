@@ -7,6 +7,7 @@ import { Row } from "../typings";
 export interface TableStore {
     state: {
         rows: Row[];
+        orgRows: Row[];
         fontSize: number;
         sortDirection: boolean;
         sortBy: string;
@@ -16,6 +17,7 @@ export interface TableStore {
         setSortDirection: () => void;
         setSortBy: (by: string) => void;
         setRows: (rows: Row[]) => void;
+        setOrgRows: (rows: Row[]) => void;
     };
 }
 
@@ -26,6 +28,7 @@ const tableStore = () =>
         immer(set => ({
             state: {
                 rows: [],
+                orgRows: [],
                 fontSize: 1,
 
                 sortDirection: false,
@@ -47,6 +50,10 @@ const tableStore = () =>
                 setRows: rows =>
                     set(store => {
                         store.state.rows = rows;
+                    }),
+                setOrgRows: rows =>
+                    set(store => {
+                        store.state.orgRows = rows;
                     }),
             },
         }))
