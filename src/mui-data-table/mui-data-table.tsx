@@ -126,7 +126,9 @@ const MuiDataTable = memo((props: DataTableProps) => {
                         height="100%"
                         width="100%"
                         ref={virtuoso}
-                        data={sortedRows}
+                        // if rows have been changed, then fallback to original
+                        // while the sortedRows get applied
+                        data={rows.length !== sortedRows.length ? rows : sortedRows}
                         overscan={overscanCount}
                         itemContent={(index, row) => (
                             <VirtualRow
