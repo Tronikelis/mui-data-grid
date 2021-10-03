@@ -1,4 +1,4 @@
-import { useEffect, useRef, memo } from "react";
+import { useRef, memo } from "react";
 import {
     Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, LinearProgress,
 } from "@mui/material";
@@ -8,11 +8,8 @@ import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
 
 import { useTableStore, StoreProvider } from "../store";
 import { ExportCSV, MinMaxFont, Refresh } from "../toolbar";
-import { DataTableProps, Row } from "../typings";
+import { DataTableProps } from "../typings";
 import { VirtualRow } from "./row";
-
-// use this later for refreshing
-export let cachedRows: Row[] | null = null;
 
 const MuiDataTable = memo((props: DataTableProps) => {
     const { columns, rows, component, loading, sx, overscanCount = 0, truncateText } = props;
@@ -39,12 +36,6 @@ const MuiDataTable = memo((props: DataTableProps) => {
         [rows],
         isEqual
     );
-
-    // cache the rows, to refresh to them later
-    useEffect(() => {
-        cachedRows = rows;
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     const sortRows = (dir: boolean, field: string) => {
         const sortFn = () => {
