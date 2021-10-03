@@ -10,7 +10,12 @@ import { useTableStore, StoreProvider } from "../store";
 import { ExportCSV, MinMaxFont, Refresh } from "../toolbar";
 import { DataTableProps } from "../typings";
 import { VirtualRow } from "./row";
-import { sort } from "fast-sort";
+import { createNewSortInstance } from "fast-sort";
+
+// natural sort
+const naturalSort = createNewSortInstance({
+    comparer: new Intl.Collator(undefined, { numeric: true, sensitivity: "base" }).compare,
+});
 
 const MuiDataTable = memo((props: DataTableProps) => {
     const { columns, rows, component, loading, sx, overscanCount = 0, truncateText } = props;
@@ -39,9 +44,9 @@ const MuiDataTable = memo((props: DataTableProps) => {
     const sortRows = (dir: boolean, field: string) => {
         const sortFn = () => {
             if (dir) {
-                return sort(rows).asc(x => x[field]);
+                return naturalSort(rows).asc(x => x[field]);
             }
-            return sort(rows).desc(x => x[field]);
+            return naturalSort(rows).desc(x => x[field]);
         };
 
         setSortBy(field);
