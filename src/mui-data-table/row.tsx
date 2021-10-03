@@ -16,12 +16,14 @@ export const VirtualRow = memo((props: VirtualRowProps) => {
                 <>
                     {renderCell({
                         index,
-                        data: row?.[field] ?? "",
+                        value: row?.[field] ?? "",
+                        row,
                     })}
                 </>
             );
         }
-        return row?.[field]?.toString() ?? "";
+
+        return String(row?.[field]);
     };
 
     return (

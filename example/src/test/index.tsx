@@ -12,7 +12,7 @@ const def = Array(10)
         other: "hi " + Math.random().toFixed(Math.floor(Math.random() * 30)),
     })) as Row[];
 
-function cell() {
+function cell({ value, row }: any) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [open, setOpen] = useState(false);
 
@@ -20,7 +20,7 @@ function cell() {
         <>
             <Button onClick={() => setOpen(true)}>Open</Button>
             <Dialog open={open} onClose={() => setOpen(false)}>
-                <div>Heelloo</div>
+                <div>Heelloo, {JSON.stringify({ value, row })}</div>
             </Dialog>
         </>
     );

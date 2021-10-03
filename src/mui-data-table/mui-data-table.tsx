@@ -39,11 +39,11 @@ const MuiDataTable = memo((props: DataTableProps) => {
         const sortFn = () => {
             if (dir) {
                 return [...rows].sort((a, b) =>
-                    a[field].toString().localeCompare(b[field].toString())
+                    `${a[field]}`.localeCompare(`${b[field]}`)
                 );
             }
             return [...rows].sort((a, b) =>
-                b[field].toString().localeCompare(a[field].toString())
+                `${b[field]}`.localeCompare(`${a[field]}`)
             );
         };
 
@@ -106,7 +106,7 @@ const MuiDataTable = memo((props: DataTableProps) => {
                                             setSortDirection();
                                         }}
                                     >
-                                        {headerName.toString()}
+                                        {String(headerName)}
                                     </TableSortLabel>
                                 </Box>
                             </TableCell>
