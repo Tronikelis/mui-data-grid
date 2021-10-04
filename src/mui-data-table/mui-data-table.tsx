@@ -69,7 +69,7 @@ const MuiDataTable = memo((props: DataTableProps) => {
 
             <Table
                 sx={{
-                    minWidth: "300px",
+                    minWidth: "fit-content",
                     display: "flex",
                     flexDirection: "column",
                     width: "100%",
