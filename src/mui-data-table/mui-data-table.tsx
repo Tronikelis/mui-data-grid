@@ -70,7 +70,6 @@ const MuiDataTable = memo((props: DataTableProps) => {
             <TableContainer sx={fwh} component={component ?? "div"}>
                 <Table
                     sx={{
-                        minWidth: "100%",
                         display: "flex",
                         flexDirection: "column",
                         ...fwh,
@@ -78,56 +77,65 @@ const MuiDataTable = memo((props: DataTableProps) => {
                     }}
                     component="div"
                 >
-                    <TableHead component="div">
-                        <TableRow sx={{ display: "flex" }} component="div">
-                            {columns.map(({ field, flex, width, headerName }) => (
-                                <TableCell
-                                    key={field}
-                                    sx={{
-                                        flex: !width && !flex ? 1 : flex,
-                                        width,
-                                        overflow: "hidden",
-                                        whiteSpace: "nowrap",
-                                        textOverflow: "ellipsis",
-                                    }}
-                                    component="div"
-                                >
-                                    <TableSortLabel
-                                        active={sortBy === field}
-                                        direction={sortDirection ? "asc" : "desc"}
-                                        onClick={() => {
-                                            sortRows(!sortDirection, field);
-                                            setSortDirection();
+                    <Box
+                        sx={{
+                            ...fwh,
+                            minWidth: "max-content",
+                            display: "flex",
+                            flexDirection: "column",
+                        }}
+                    >
+                        <TableHead component="div">
+                            <TableRow sx={{ display: "flex" }} component="div">
+                                {columns.map(({ field, flex, width, headerName }) => (
+                                    <TableCell
+                                        key={field}
+                                        sx={{
+                                            flex: !width && !flex ? 1 : flex,
+                                            width,
+                                            overflow: "hidden",
+                                            whiteSpace: "nowrap",
+                                            textOverflow: "ellipsis",
                                         }}
+                                        component="div"
                                     >
-                                        {String(headerName)}
-                                    </TableSortLabel>
-                                </TableCell>
-                            ))}
-                        </TableRow>
-                    </TableHead>
+                                        <TableSortLabel
+                                            active={sortBy === field}
+                                            direction={sortDirection ? "asc" : "desc"}
+                                            onClick={() => {
+                                                sortRows(!sortDirection, field);
+                                                setSortDirection();
+                                            }}
+                                        >
+                                            {String(headerName)}
+                                        </TableSortLabel>
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                        </TableHead>
 
-                    {/** virtualized rows */}
-                    <TableBody sx={{ ...fwh, position: "relative" }} component="div">
-                        {loading && <LoadingOverlay />}
-                        <Virtuoso
-                            height="100%"
-                            width="100%"
-                            ref={virtuoso}
-                            // if rows have been changed, then fallback to original
-                            // while the sortedRows get applied
-                            data={rows.length !== sortedRows.length ? rows : sortedRows}
-                            overscan={overscanCount}
-                            itemContent={(index, row) => (
-                                <VirtualRow
-                                    columns={columns}
-                                    row={row}
-                                    index={index}
-                                    truncate={truncateText}
-                                />
-                            )}
-                        />
-                    </TableBody>
+                        {/** virtualized rows */}
+                        <TableBody sx={{ ...fwh, position: "relative" }} component="div">
+                            {loading && <LoadingOverlay />}
+                            <Virtuoso
+                                height="100%"
+                                width="100%"
+                                ref={virtuoso}
+                                // if rows have been changed, then fallback to original
+                                // while the sortedRows get applied
+                                data={rows.length !== sortedRows.length ? rows : sortedRows}
+                                overscan={overscanCount}
+                                itemContent={(index, row) => (
+                                    <VirtualRow
+                                        columns={columns}
+                                        row={row}
+                                        index={index}
+                                        truncate={truncateText}
+                                    />
+                                )}
+                            />
+                        </TableBody>
+                    </Box>
                 </Table>
             </TableContainer>
         </Box>
