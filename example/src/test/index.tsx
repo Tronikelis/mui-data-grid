@@ -3,7 +3,7 @@ import { Button, CssBaseline, Dialog, Paper } from "@mui/material";
 
 import { MuiDataTable, Row } from "mui-data-table";
 
-const def = Array(10)
+const def = Array(10_000)
     .fill(0)
     .map((val, index) => ({
         hello: null as any,

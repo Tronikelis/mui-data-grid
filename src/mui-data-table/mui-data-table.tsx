@@ -17,6 +17,11 @@ const naturalSort = createNewSortInstance({
     comparer: new Intl.Collator(undefined, { numeric: true, sensitivity: "base" }).compare,
 });
 
+const fwh = {
+    width: "100%",
+    height: "100%",
+};
+
 const MuiDataTable = memo((props: DataTableProps) => {
     const { columns, rows, component, loading, sx, overscanCount = 0, truncateText } = props;
 
@@ -56,92 +61,82 @@ const MuiDataTable = memo((props: DataTableProps) => {
     };
 
     return (
-        <TableContainer
+        <Box
             component={component ?? "div"}
-            sx={{
-                height: "100%",
-                width: "100%",
-                display: "flex",
-                flexDirection: "column",
-            }}
+            sx={{ ...fwh, display: "flex", flexDirection: "column" }}
         >
             <Toolbar />
 
-            <Table
-                sx={{
-                    minWidth: "fit-content",
-                    display: "flex",
-                    flexDirection: "column",
-                    width: "100%",
-                    height: "100%",
-                    ...sx,
-                }}
-                component="div"
-            >
-                <TableHead component="div">
-                    <TableRow sx={{ display: "flex" }} component="div">
-                        {columns.map(({ field, flex, width, headerName }) => (
-                            <TableCell
-                                key={field}
-                                sx={{
-                                    flex: !width && !flex ? 1 : flex,
-                                    width,
-                                    whiteSpace: "nowrap",
-                                    overflow: "hidden",
-                                    textOverflow: "ellipsis",
-                                }}
-                                component="div"
-                            >
-                                <Box
-                                    sx={{
-                                        display: "flex",
-                                        justifyContent: "flex-start",
-                                        alignItems: "center",
-                                        width: "100%",
-                                    }}
-                                >
-                                    <TableSortLabel
-                                        active={sortBy === field}
-                                        direction={sortDirection ? "asc" : "desc"}
-                                        onClick={() => {
-                                            sortRows(!sortDirection, field);
-                                            setSortDirection();
-                                        }}
-                                    >
-                                        {String(headerName)}
-                                    </TableSortLabel>
-                                </Box>
-                            </TableCell>
-                        ))}
-                    </TableRow>
-                </TableHead>
-
-                {/** virtualized rows */}
-                <TableBody
-                    sx={{ width: "100%", height: "100%", position: "relative" }}
+            <TableContainer sx={fwh} component={component ?? "div"}>
+                <Table
+                    sx={{
+                        minWidth: "fit-content",
+                        display: "flex",
+                        flexDirection: "column",
+                        ...fwh,
+                        ...sx,
+                    }}
                     component="div"
                 >
-                    {loading && <LoadingOverlay />}
-                    <Virtuoso
-                        height="100%"
-                        width="100%"
-                        ref={virtuoso}
-                        // if rows have been changed, then fallback to original
-                        // while the sortedRows get applied
-                        data={rows.length !== sortedRows.length ? rows : sortedRows}
-                        overscan={overscanCount}
-                        itemContent={(index, row) => (
-                            <VirtualRow
-                                columns={columns}
-                                row={row}
-                                index={index}
-                                truncate={truncateText}
-                            />
-                        )}
-                    />
-                </TableBody>
-            </Table>
-        </TableContainer>
+                    <TableHead component="div">
+                        <TableRow sx={{ display: "flex" }} component="div">
+                            {columns.map(({ field, flex, width, headerName }) => (
+                                <TableCell
+                                    key={field}
+                                    sx={{
+                                        flex: !width && !flex ? 1 : flex,
+                                        width,
+                                    }}
+                                    component="div"
+                                >
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            justifyContent: "flex-start",
+                                            alignItems: "center",
+                                            width: "100%",
+                                        }}
+                                    >
+                                        <TableSortLabel
+                                            active={sortBy === field}
+                                            direction={sortDirection ? "asc" : "desc"}
+                                            onClick={() => {
+                                                sortRows(!sortDirection, field);
+                                                setSortDirection();
+                                            }}
+                                        >
+                                            {String(headerName)}
+                                        </TableSortLabel>
+                                    </Box>
+                                </TableCell>
+                            ))}
+                        </TableRow>
+                    </TableHead>
+
+                    {/** virtualized rows */}
+                    <TableBody sx={{ ...fwh, position: "relative" }} component="div">
+                        {loading && <LoadingOverlay />}
+                        <Virtuoso
+                            height="100%"
+                            width="100%"
+                            ref={virtuoso}
+                            // if rows have been changed, then fallback to original
+                            // while the sortedRows get applied
+                            data={rows.length !== sortedRows.length ? rows : sortedRows}
+                            overscan={overscanCount}
+                            itemContent={(index, row) => (
+                                <VirtualRow
+                                    columns={columns}
+                                    row={row}
+                                    index={index}
+                                    truncate={truncateText}
+                                />
+                            )}
+                        />
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </Box>
     );
 }, isEqual);
 
