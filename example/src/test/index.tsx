@@ -72,11 +72,16 @@ export default function Test() {
                             {
                                 field: "another",
                                 headerName: "Another",
-                                width: 200,
+                                flex: 1,
                             },
                             {
                                 field: "other",
                                 headerName: "Other",
+                                flex: 1,
+                            },
+                            {
+                                field: "AA",
+                                headerName: "NAH",
                                 flex: 1,
                             },
                         ]}

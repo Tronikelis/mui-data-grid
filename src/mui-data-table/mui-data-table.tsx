@@ -1,6 +1,14 @@
 import { useRef, memo } from "react";
 import {
-    Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, LinearProgress,
+    Box,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    TableSortLabel,
+    LinearProgress,
 } from "@mui/material";
 import { dequal as isEqual } from "dequal";
 import { useCustomCompareEffect as useDeepEffect } from "use-custom-compare";
@@ -70,7 +78,7 @@ const MuiDataTable = memo((props: DataTableProps) => {
             <TableContainer sx={fwh} component={component ?? "div"}>
                 <Table
                     sx={{
-                        minWidth: "fit-content",
+                        minWidth: "100%",
                         display: "flex",
                         flexDirection: "column",
                         ...fwh,
@@ -86,28 +94,22 @@ const MuiDataTable = memo((props: DataTableProps) => {
                                     sx={{
                                         flex: !width && !flex ? 1 : flex,
                                         width,
+                                        overflow: "hidden",
+                                        whiteSpace: "nowrap",
+                                        textOverflow: "ellipsis",
                                     }}
                                     component="div"
                                 >
-                                    <Box
-                                        sx={{
-                                            display: "flex",
-                                            justifyContent: "flex-start",
-                                            alignItems: "center",
-                                            width: "100%",
+                                    <TableSortLabel
+                                        active={sortBy === field}
+                                        direction={sortDirection ? "asc" : "desc"}
+                                        onClick={() => {
+                                            sortRows(!sortDirection, field);
+                                            setSortDirection();
                                         }}
                                     >
-                                        <TableSortLabel
-                                            active={sortBy === field}
-                                            direction={sortDirection ? "asc" : "desc"}
-                                            onClick={() => {
-                                                sortRows(!sortDirection, field);
-                                                setSortDirection();
-                                            }}
-                                        >
-                                            {String(headerName)}
-                                        </TableSortLabel>
-                                    </Box>
+                                        {String(headerName)}
+                                    </TableSortLabel>
                                 </TableCell>
                             ))}
                         </TableRow>
