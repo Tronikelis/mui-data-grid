@@ -3,13 +3,13 @@ import { Button, CssBaseline, Dialog, Paper } from "@mui/material";
 
 import { MuiDataTable, Row } from "mui-data-table";
 
-const def = Array(10_000)
+const def = Array(3)
     .fill(0)
     .map((val, index) => ({
         hello: null as any,
-        world: "hi " + Math.random().toFixed(Math.floor(Math.random() * 30)),
-        another: "hi " + Math.random().toFixed(Math.floor(Math.random() * 30)),
-        other: "hi " + Math.random().toFixed(Math.floor(Math.random() * 30)),
+        world: "hi " + Math.random().toFixed(Math.floor(Math.random() * 100)),
+        another: "hi " + Math.random().toFixed(Math.floor(Math.random() * 100)),
+        other: "hi " + Math.random().toFixed(Math.floor(Math.random() * 100)),
     })) as Row[];
 
 function cell({ value, row }: any) {
