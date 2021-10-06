@@ -24,16 +24,11 @@ export function TruncateText(props: TruncateTextProps) {
     // calculate text's length
     const textRef = useCallback(
         (node: HTMLSpanElement | null) => {
-            if (!node) {
-                setLength(null);
-                return;
-            }
+            if (!node) return;
+
             // calculate if there are more new lines than the maximum
             const breaks = node.getClientRects().length;
-            if (breaks <= lines) {
-                setLength(null);
-                return;
-            }
+            if (breaks <= lines) return;
 
             setLength(Math.ceil(node.innerText.length / lines));
         },
