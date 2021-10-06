@@ -1,11 +1,10 @@
-import { memo } from "react";
 import { TableRow, TableCell } from "@mui/material";
 
 import { TruncateText } from "../helpers";
 import { useTableStore } from "../store";
 import { VirtualRowProps, RenderCell } from "../typings";
 
-export const VirtualRow = memo((props: VirtualRowProps) => {
+export const VirtualRow = (props: VirtualRowProps) => {
     const { columns, row, index, truncate } = props;
 
     const fontSize = useTableStore(store => store.state.fontSize);
@@ -56,4 +55,4 @@ export const VirtualRow = memo((props: VirtualRowProps) => {
             </TableRow>
         </div>
     );
-});
+};
