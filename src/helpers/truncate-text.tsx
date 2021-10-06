@@ -24,10 +24,16 @@ export function TruncateText(props: TruncateTextProps) {
     // calculate text's length
     const textRef = useCallback(
         (node: HTMLSpanElement | null) => {
-            if (!node) return;
+            if (!node) {
+                setLength(null);
+                return;
+            }
             // calculate if there are more new lines than the maximum
             const breaks = node.getClientRects().length;
-            if (breaks <= lines) return;
+            if (breaks <= lines) {
+                setLength(null);
+                return;
+            }
 
             setLength(Math.ceil(node.innerText.length / lines));
         },
@@ -36,6 +42,7 @@ export function TruncateText(props: TruncateTextProps) {
 
     useEffect(() => {
         isString(obj) && setValue(obj);
+        return () => setLength(null);
     }, [obj]);
 
     // fallback if not a string
@@ -46,7 +53,7 @@ export function TruncateText(props: TruncateTextProps) {
             {truncated && length ? value.substring(0, length) : value}
 
             <span onClick={() => setTruncated(x => !x)} style={MoreLessStyle}>
-                {length && <>{truncated ? "... " + moreText : "... " + lessText}</>}
+                {length && <>{truncated ? "... " + moreText : " " + lessText}</>}
             </span>
         </span>
     );
