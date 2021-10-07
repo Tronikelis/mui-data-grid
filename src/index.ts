@@ -1,1 +1,1 @@
-export { MuiDataTable } from "./mui-data-table";
+export * from "./mui-data-table";
