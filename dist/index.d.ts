@@ -19,7 +19,7 @@ interface Column {
 
 type RenderCell = (args: { index: number; value: any; row: Row }) => ReactNode;
 
-interface DataTableProps {
+interface DataGridProps {
     /**
      * the table rows
      */
@@ -73,6 +73,6 @@ interface VirtualDynamicListProps {
     overscanCount: number;
 }
 
-declare function MuiDataGrid(props: DataTableProps): JSX.Element;
+declare function MuiDataGrid(props: DataGridProps): JSX.Element;
 
-export { Column, DataTableProps, MuiDataGrid, RenderCell, Row, VirtualDynamicListProps, VirtualRowProps };
+export { Column, DataGridProps, MuiDataGrid, RenderCell, Row, VirtualDynamicListProps, VirtualRowProps };

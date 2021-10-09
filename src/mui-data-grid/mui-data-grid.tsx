@@ -8,7 +8,7 @@ import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
 
 import { useGridStore, StoreProvider } from "../store";
 import { ExportCSV, MinMaxFont, Refresh } from "../toolbar";
-import { DataTableProps } from "../typings";
+import { DataGridProps } from "../typings";
 import { VirtualRow } from "./row";
 import { createNewSortInstance } from "fast-sort";
 
@@ -22,7 +22,7 @@ const fwh = {
     height: "100%",
 };
 
-const MuiDataGrid = memo((props: DataTableProps) => {
+const MuiDataGrid = memo((props: DataGridProps) => {
     const { columns, rows, component, loading, sx, overscanCount = 0, truncateText } = props;
 
     const { rows: sortedRows, sortBy, sortDirection } = useGridStore(store => store.state);
@@ -173,7 +173,7 @@ function LoadingOverlay() {
 }
 
 // entry point to the data table component
-export default function TableEntry({ ...props }: DataTableProps) {
+export default function TableEntry({ ...props }: DataGridProps) {
     return (
         <StoreProvider>
             <MuiDataGrid {...props} />
