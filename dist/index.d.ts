@@ -73,6 +73,6 @@ interface VirtualDynamicListProps {
     overscanCount: number;
 }
 
-declare function MuiDataTable(props: DataTableProps): JSX.Element;
+declare function MuiDataGrid(props: DataTableProps): JSX.Element;
 
-export { Column, DataTableProps, MuiDataTable, RenderCell, Row, VirtualDynamicListProps, VirtualRowProps };
+export { Column, DataTableProps, MuiDataGrid, RenderCell, Row, VirtualDynamicListProps, VirtualRowProps };

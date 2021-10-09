@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, CssBaseline, Dialog, Paper } from "@mui/material";
 
-import { MuiDataTable, Row } from "mui-data-grid";
+import { MuiDataGrid, Row } from "mui-data-grid";
 
 const def = Array(2)
     .fill(0)
@@ -57,7 +57,7 @@ export default function Test() {
                 </button>
 
                 <div style={{ height: "100%", width: "100%" }}>
-                    <MuiDataTable
+                    <MuiDataGrid
                         columns={[
                             {
                                 field: "hello",

@@ -4,7 +4,7 @@ import createContext, { UseContextStore } from "zustand/context";
 import { immer } from "./middleware";
 import { Row } from "../typings";
 
-export interface TableStore {
+export interface GridStore {
     state: {
         rows: Row[];
         orgRows: Row[];
@@ -23,8 +23,8 @@ export interface TableStore {
 
 const { Provider, useStore, useStoreApi } = createContext();
 
-const tableStore = () =>
-    create<TableStore>(
+const gridStore = () =>
+    create<GridStore>(
         immer(set => ({
             state: {
                 rows: [],
@@ -60,8 +60,8 @@ const tableStore = () =>
     );
 
 export function StoreProvider({ children }: any) {
-    return <Provider createStore={tableStore as any}>{children}</Provider>;
+    return <Provider createStore={gridStore as any}>{children}</Provider>;
 }
 
-export const useTableStore = useStore as UseContextStore<TableStore>;
-export const useTableStoreAPI = useStoreApi;
+export const useGridStore = useStore as UseContextStore<GridStore>;
+export const useGridStoreAPI = useStoreApi;

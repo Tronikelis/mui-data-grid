@@ -6,7 +6,7 @@ import { dequal as isEqual } from "dequal";
 import { useCustomCompareEffect as useDeepEffect } from "use-custom-compare";
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
 
-import { useTableStore, StoreProvider } from "../store";
+import { useGridStore, StoreProvider } from "../store";
 import { ExportCSV, MinMaxFont, Refresh } from "../toolbar";
 import { DataTableProps } from "../typings";
 import { VirtualRow } from "./row";
@@ -22,17 +22,17 @@ const fwh = {
     height: "100%",
 };
 
-const MuiDataTable = memo((props: DataTableProps) => {
+const MuiDataGrid = memo((props: DataTableProps) => {
     const { columns, rows, component, loading, sx, overscanCount = 0, truncateText } = props;
 
-    const { rows: sortedRows, sortBy, sortDirection } = useTableStore(store => store.state);
+    const { rows: sortedRows, sortBy, sortDirection } = useGridStore(store => store.state);
 
     const {
         setOrgRows,
         setRows: setSortedRows,
         setSortBy,
         setSortDirection,
-    } = useTableStore(store => store.actions);
+    } = useGridStore(store => store.actions);
 
     const virtuoso = useRef<VirtuosoHandle>(null);
 
@@ -176,7 +176,7 @@ function LoadingOverlay() {
 export default function TableEntry({ ...props }: DataTableProps) {
     return (
         <StoreProvider>
-            <MuiDataTable {...props} />
+            <MuiDataGrid {...props} />
         </StoreProvider>
     );
 }

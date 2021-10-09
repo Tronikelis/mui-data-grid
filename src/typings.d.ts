@@ -73,4 +73,4 @@ export interface VirtualDynamicListProps {
     overscanCount: number;
 }
 
-export function MuiDataTable(props: DataTableProps): JSX.Element;
+export function MuiDataGrid(props: DataTableProps): JSX.Element;

@@ -1,13 +1,13 @@
 import { TableRow, TableCell } from "@mui/material";
 
 import { TruncateText } from "../helpers";
-import { useTableStore } from "../store";
+import { useGridStore } from "../store";
 import { VirtualRowProps, RenderCell } from "../typings";
 
 export const VirtualRow = (props: VirtualRowProps) => {
     const { columns, row, index, truncate } = props;
 
-    const fontSize = useTableStore(store => store.state.fontSize);
+    const fontSize = useGridStore(store => store.state.fontSize);
 
     const renderField = (field: string, renderCell?: RenderCell) => {
         const value = row?.[field] ? String(row[field]) : "";

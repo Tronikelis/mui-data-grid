@@ -1,1 +1,1 @@
-export * from "./mui-data-table";
+export * from "./mui-data-grid";

@@ -3,17 +3,17 @@ import ImportExportIcon from "@mui/icons-material/ImportExport";
 import { Box, Button } from "@mui/material";
 import { CSVLink } from "react-csv";
 
-import { useTableStoreAPI, TableStore } from "../store";
+import { useGridStoreAPI, GridStore } from "../store";
 
 export default function ExportCSV() {
-    const { getState, subscribe } = useTableStoreAPI();
+    const { getState, subscribe } = useGridStoreAPI();
 
-    const dataRef = useRef((getState() as TableStore).state.rows);
+    const dataRef = useRef((getState() as GridStore).state.rows);
 
     useEffect(
         () =>
             // eslint-disable-next-line react-hooks/rules-of-hooks
-            subscribe((store: TableStore) => (dataRef.current = store.state.rows)),
+            subscribe((store: GridStore) => (dataRef.current = store.state.rows)),
         // eslint-disable-next-line react-hooks/exhaustive-deps
         []
     );
