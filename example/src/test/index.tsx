@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, CssBaseline, Dialog, Paper } from "@mui/material";
 
-import { MuiDataTable, Row } from "mui-data-table";
+import { MuiDataTable, Row } from "mui-data-grid";
 
 const def = Array(2)
     .fill(0)
