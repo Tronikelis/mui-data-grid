@@ -1,10 +1,10 @@
 {
-    "name": "mui-data-table",
+    "name": "mui-data-grid",
     "version": "1.0.0",
     "author": "Tronikel",
     "license": "MIT",
-    "repository": "Trunkelis/mui-data-table",
-    "homepage": "https://github.com/Trunkelis/mui-data-table",
+    "repository": "Trunkelis/mui-data-grid",
+    "homepage": "https://github.com/Trunkelis/mui-data-grid",
     "dependencies": {
         "dequal": "^2.0.2",
         "fast-sort": "^3.0.3",
