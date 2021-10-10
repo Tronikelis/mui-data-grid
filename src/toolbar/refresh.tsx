@@ -1,5 +1,5 @@
 import { IconButton } from "@mui/material";
-import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 import { GridStore, useGridStore, useGridStoreAPI } from "../store";
 
@@ -18,7 +18,7 @@ export default function Refresh() {
 
     return (
         <IconButton onClick={refresh}>
-            <RestartAltIcon />
+            <VisibilityIcon />
         </IconButton>
     );
 }
