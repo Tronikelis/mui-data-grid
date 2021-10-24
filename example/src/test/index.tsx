@@ -3,7 +3,7 @@ import { Button, CssBaseline, Dialog, Paper } from "@mui/material";
 
 import { MuiDataGrid, Row } from "mui-data-grid";
 
-const def = Array(2)
+const def = Array(10_000)
     .fill(0)
     .map((val, index) => ({
         hello: null as any,
